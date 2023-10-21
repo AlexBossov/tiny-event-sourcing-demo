@@ -20,7 +20,7 @@ class UserAggregateState : AggregateState<UUID, UserAggregate> {
 
     // State transition functions which is represented by the class member function
     @StateTransitionFunc
-    fun projectCreatedApply(event: UserCreatedEvent) {
+    fun userCreatedApply(event: UserCreatedEvent) {
         userId = event.userId
         nickname = event.nickname
         password = event.password
