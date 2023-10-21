@@ -14,8 +14,10 @@ const val USER_DELETED_FROM_TASK = "USER_DELETED_FROM_TASK"
 class TaskCreatedEvent(
     val projectId: UUID,
     val taskId: UUID,
+    val userId: UUID,
     val taskName: String,
-    val taskDescription: String,
+    val taskDescription: String?,
+    val statusId: UUID,
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<ProjectAggregate>(
     name = TASK_CREATED_EVENT,
@@ -26,7 +28,7 @@ class TaskCreatedEvent(
 class TaskUpdatedEvent(
     val taskId: UUID,
     val taskName: String,
-    val taskDescription: String,
+    val taskDescription: String?,
     val statusId: UUID,
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<ProjectAggregate>(

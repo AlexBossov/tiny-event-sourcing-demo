@@ -12,7 +12,10 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
     var updatedAt: Long = System.currentTimeMillis()
 
     lateinit var taskName: String
-    lateinit var taskDescription: String
+    var taskDescription: String? = null
+    lateinit var statusId: UUID
+    lateinit var projectId: UUID
+    lateinit var userId: UUID
 
     override fun getId() = taskId
 
@@ -22,6 +25,10 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
         taskId = event.taskId
         taskName = event.taskName
         taskDescription = event.taskDescription
+        statusId = event.statusId
+        projectId = event.projectId
+        userId = event.userId
+        createdAt = createdAt
         updatedAt = createdAt
     }
 }

@@ -3,23 +3,17 @@ package ru.quipy.logic
 import ru.quipy.api.ProjectCreatedEvent
 import ru.quipy.api.TagAssignedToTaskEvent
 import ru.quipy.api.TagCreatedEvent
-import ru.quipy.api.TaskCreatedEvent
 import java.util.*
-
 
 // Commands : takes something -> returns event
 // Here the commands are represented by extension functions, but also can be the class member functions
 
-fun ProjectAggregateState.create(id: UUID, title: String, creatorId: String): ProjectCreatedEvent {
+fun ProjectAggregateState.create(id: UUID, title: String, userId: UUID): ProjectCreatedEvent {
     return ProjectCreatedEvent(
         projectId = id,
         title = title,
-        creatorId = creatorId,
+        userId = userId,
     )
-}
-
-fun ProjectAggregateState.addTask(name: String, description: String): TaskCreatedEvent {
-    return TaskCreatedEvent(projectId = this.getId(), taskId = UUID.randomUUID(), taskName = name, taskDescription = description)
 }
 
 fun ProjectAggregateState.createTag(name: String): TagCreatedEvent {

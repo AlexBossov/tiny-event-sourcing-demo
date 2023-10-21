@@ -15,7 +15,7 @@ const val USER_DELETED_FROM_PROJECT = "USER_DELETED_FROM_PROJECT"
 class ProjectCreatedEvent(
     val projectId: UUID,
     val title: String,
-    val creatorId: String,
+    val userId: UUID,
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<ProjectAggregate>(
     name = PROJECT_CREATED_EVENT,
