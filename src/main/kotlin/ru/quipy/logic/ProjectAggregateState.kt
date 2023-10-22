@@ -29,7 +29,19 @@ class ProjectAggregateState : AggregateState<UUID, ProjectAggregate> {
 
     @StateTransitionFunc
     fun tagCreatedApply(event: TagCreatedEvent) {
-        projectTags[event.tagId] = TagEntity(event.tagId, event.tagName)
+        // TODO: ??
+        updatedAt = createdAt
+    }
+
+    @StateTransitionFunc
+    fun userAddedToProjectApply(event: UserAddedToProjectEvent) {
+        // TODO: ?
+        updatedAt = createdAt
+    }
+
+    @StateTransitionFunc
+    fun userDeletedFromProjectApply(event: UserDeletedFromProjectEvent) {
+        // TODO: ??
         updatedAt = createdAt
     }
 }

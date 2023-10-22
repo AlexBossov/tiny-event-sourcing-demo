@@ -19,7 +19,7 @@ class TaskCreatedEvent(
     val taskDescription: String?,
     val statusId: UUID,
     createdAt: Long = System.currentTimeMillis(),
-) : Event<ProjectAggregate>(
+) : Event<TaskAggregate>(
     name = TASK_CREATED_EVENT,
     createdAt = createdAt
 )
@@ -31,7 +31,7 @@ class TaskUpdatedEvent(
     val taskDescription: String?,
     val statusId: UUID,
     createdAt: Long = System.currentTimeMillis(),
-) : Event<ProjectAggregate>(
+) : Event<TaskAggregate>(
     name = TASK_UPDATED_EVENT,
     createdAt = createdAt
 )
@@ -40,7 +40,7 @@ class TaskUpdatedEvent(
 class TaskDeletedEvent(
     val taskId: UUID,
     createdAt: Long = System.currentTimeMillis(),
-) : Event<ProjectAggregate>(
+) : Event<TaskAggregate>(
     name = TASK_DELETED_EVENT,
     createdAt = createdAt
 )
@@ -50,7 +50,7 @@ class UserAddedToTaskEvent(
     val taskId: UUID,
     val userId: UUID,
     createdAt: Long = System.currentTimeMillis(),
-) : Event<ProjectAggregate>(
+) : Event<TaskAggregate>(
     name = USER_ADDED_TO_TASK,
     createdAt = createdAt
 )
@@ -60,7 +60,7 @@ class UserDeletedFromTaskEvent(
     val taskId: UUID,
     val userId: UUID,
     createdAt: Long = System.currentTimeMillis(),
-) : Event<ProjectAggregate>(
+) : Event<TaskAggregate>(
     name = USER_DELETED_FROM_TASK,
     createdAt = createdAt
 )

@@ -1,7 +1,6 @@
 package ru.quipy.logic
 
-import ru.quipy.api.TaskAggregate
-import ru.quipy.api.TaskCreatedEvent
+import ru.quipy.api.*
 import ru.quipy.core.annotations.StateTransitionFunc
 import ru.quipy.domain.AggregateState
 import java.util.*
@@ -28,7 +27,27 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
         statusId = event.statusId
         projectId = event.projectId
         userId = event.userId
-        createdAt = createdAt
         updatedAt = createdAt
+    }
+
+    @StateTransitionFunc
+    fun taskUpdatedApply(event: TaskUpdatedEvent) {
+        //TODO: ??
+    }
+
+
+    @StateTransitionFunc
+    fun taskDeletedApply(event: TaskDeletedEvent) {
+        //TODO: ??
+    }
+
+    @StateTransitionFunc
+    fun userAddedToTaskApply(event: UserAddedToTaskEvent) {
+        //TODO: ??
+    }
+
+    @StateTransitionFunc
+    fun userDeletedFromTaskApply(event: UserDeletedFromTaskEvent) {
+        //TODO: ??
     }
 }

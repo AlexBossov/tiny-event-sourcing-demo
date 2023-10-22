@@ -9,8 +9,15 @@ import java.util.*
 
 @RestController
 @RequestMapping("/tasks")
-class TaskController (
+class TaskController(
     val taskEsService: EventSourcingService<UUID, TaskAggregate, TaskAggregateState>
 ) {
-
+//    @PostMapping("/{projectId}/tasks/{taskName}")
+//    fun createTask(@PathVariable projectId: UUID,
+//                   @RequestParam taskName: String,
+//                   @RequestParam taskDescription: String?) : TaskCreatedEvent {
+//        return taskEsService.create(projectId) {
+//            it.(taskName, taskDescription)
+//        }
+//    }
 }
