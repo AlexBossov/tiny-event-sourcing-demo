@@ -26,7 +26,7 @@ fun ProjectAggregateState.assignTagToTask(tagId: UUID, taskId: UUID): TagAssigne
         throw IllegalArgumentException("Tag doesn't exists: $tagId")
     }
 
-    if (!tasks.containsKey(taskId)) {
+    if (!tasks.contains(taskId)) {
         throw IllegalArgumentException("Task doesn't exists: $taskId")
     }
 
@@ -43,4 +43,10 @@ fun ProjectAggregateState.deleteUserFromProject(userId: UUID): UserDeletedFromPr
     return UserDeletedFromProjectEvent(
         projectId = this.getId(),
         userId = userId)
+}
+
+fun ProjectAggregateState.addTaskToProject(taskId: UUID): TaskAddedToProjectEvent {
+    return TaskAddedToProjectEvent(
+        projectId = this.getId(),
+        taskId = taskId)
 }

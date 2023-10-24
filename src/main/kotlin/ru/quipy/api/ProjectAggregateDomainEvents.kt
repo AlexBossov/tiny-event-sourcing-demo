@@ -9,6 +9,8 @@ const val TAG_CREATED_EVENT = "TAG_CREATED_EVENT"
 const val TAG_ASSIGNED_TO_TASK_EVENT = "TAG_ASSIGNED_TO_TASK_EVENT"
 const val USER_ADDED_TO_PROJECT = "USER_ADDED_TO_PROJECT"
 const val USER_DELETED_FROM_PROJECT = "USER_DELETED_FROM_PROJECT"
+const val TASK_ADDED_TO_PROJECT_EVENT = "TASK_ADDED_TO_PROJECT_EVENT"
+
 
 // API
 @DomainEvent(name = PROJECT_CREATED_EVENT)
@@ -61,5 +63,15 @@ class UserDeletedFromProjectEvent(
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<ProjectAggregate>(
     name = USER_DELETED_FROM_PROJECT,
+    createdAt = createdAt
+)
+
+@DomainEvent(name = TASK_ADDED_TO_PROJECT_EVENT)
+class TaskAddedToProjectEvent(
+    val projectId: UUID,
+    val taskId: UUID,
+    createdAt: Long = System.currentTimeMillis(),
+) : Event<ProjectAggregate>(
+    name = TASK_ADDED_TO_PROJECT_EVENT,
     createdAt = createdAt
 )

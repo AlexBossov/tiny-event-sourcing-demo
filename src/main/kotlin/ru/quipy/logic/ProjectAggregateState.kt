@@ -13,7 +13,7 @@ class ProjectAggregateState : AggregateState<UUID, ProjectAggregate> {
 
     lateinit var projectTitle: String
     var users = mutableListOf<UUID>()
-    var tasks = mutableMapOf<UUID, TaskEntity>()
+    var tasks = mutableListOf<UUID>()
     var projectTags = mutableMapOf<UUID, TagEntity>()
 
     override fun getId() = projectId
@@ -34,8 +34,8 @@ class ProjectAggregateState : AggregateState<UUID, ProjectAggregate> {
     }
 
     @StateTransitionFunc
-    fun taskCreatedApply(event: TaskCreatedEvent) {
-        tasks[event.taskId] = TaskEntity(event.taskId, event.taskName, mutableSetOf())
+    fun taskCreatedApply(event: TaskAddedToProjectEvent) {
+        tasks.add(event.taskId)
         updatedAt = createdAt
     }
 
@@ -52,12 +52,6 @@ class ProjectAggregateState : AggregateState<UUID, ProjectAggregate> {
     }
 }
 
-data class TaskEntity(
-    val id: UUID = UUID.randomUUID(),
-    val name: String,
-    val tagsAssigned: MutableSet<UUID>
-)
-
 data class TagEntity(
     val id: UUID = UUID.randomUUID(),
     val name: String
@@ -68,7 +62,7 @@ data class TagEntity(
  */
 @StateTransitionFunc
 fun ProjectAggregateState.tagAssignedApply(event: TagAssignedToTaskEvent) {
-    tasks[event.taskId]?.tagsAssigned?.add(event.tagId)
-        ?: throw IllegalArgumentException("No such task: ${event.taskId}")
+//    tasks[event.taskId]?.tagsAssigned?.add(event.tagId)
+//        ?: throw IllegalArgumentException("No such task: ${event.taskId}")
     updatedAt = createdAt
 }
