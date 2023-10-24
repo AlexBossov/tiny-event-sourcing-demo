@@ -14,6 +14,7 @@ class ProjectAggregateState : AggregateState<UUID, ProjectAggregate> {
     lateinit var projectTitle: String
     var users = mutableListOf<UUID>()
     var tasks = mutableListOf<UUID>()
+    var statuses = mutableMapOf<UUID, StatusEntity>()
     var projectTags = mutableMapOf<UUID, TagEntity>()
 
     override fun getId() = projectId
@@ -24,37 +25,55 @@ class ProjectAggregateState : AggregateState<UUID, ProjectAggregate> {
         projectId = event.projectId
         projectTitle = event.title
         users.add(event.userId)
-        updatedAt = createdAt
+        updatedAt = event.createdAt
     }
 
     @StateTransitionFunc
     fun tagCreatedApply(event: TagCreatedEvent) {
         projectTags[event.tagId] = TagEntity(event.tagId, event.tagName)
-        updatedAt = createdAt
+        updatedAt = event.createdAt
     }
 
     @StateTransitionFunc
     fun taskCreatedApply(event: TaskAddedToProjectEvent) {
         tasks.add(event.taskId)
-        updatedAt = createdAt
+        updatedAt = event.createdAt
     }
 
     @StateTransitionFunc
     fun userAddedToProjectApply(event: UserAddedToProjectEvent) {
         users.add(event.userId)
-        updatedAt = createdAt
+        updatedAt = event.createdAt
     }
 
     @StateTransitionFunc
     fun userDeletedFromProjectApply(event: UserDeletedFromProjectEvent) {
         users.remove(event.userId)
-        updatedAt = createdAt
+        updatedAt = event.createdAt
+    }
+
+    @StateTransitionFunc
+    fun statusAddedToProjectApply(event: StatusAddedToProjectEvent) {
+        statuses[event.statusId] = StatusEntity(event.statusId, event.statusName, event.statusColor)
+        updatedAt = event.createdAt
+    }
+
+    @StateTransitionFunc
+    fun statusDeletedToProjectApply(event: StatusDeletedFromProjectEvent) {
+        statuses.remove(event.statusId)
+        updatedAt = event.createdAt
     }
 }
 
 data class TagEntity(
     val id: UUID = UUID.randomUUID(),
     val name: String
+)
+
+data class StatusEntity(
+    val id: UUID = UUID.randomUUID(),
+    val name: String,
+    val color: String
 )
 
 /**
