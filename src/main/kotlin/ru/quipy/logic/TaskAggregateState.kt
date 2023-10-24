@@ -27,32 +27,32 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
         taskDescription = event.taskDescription
         projectId = event.projectId
         users.add(event.userId)
-        createdAt = createdAt
-        updatedAt = createdAt
+        createdAt = event.createdAt
+        updatedAt = event.createdAt
     }
 
     @StateTransitionFunc
     fun taskUpdatedApply(event: TaskUpdatedEvent) {
         taskName = event.taskName
         taskDescription = event.taskDescription
-        updatedAt = createdAt
+        updatedAt = event.createdAt
     }
 
     @StateTransitionFunc
     fun userAddedToTaskApply(event: UserAddedToTaskEvent) {
         users.add(event.userId)
-        updatedAt = createdAt
+        updatedAt = event.createdAt
     }
 
     @StateTransitionFunc
     fun userDeletedFromTaskApply(event: UserDeletedFromTaskEvent) {
         users.remove(event.userId)
-        updatedAt = createdAt
+        updatedAt = event.createdAt
     }
 
     @StateTransitionFunc
     fun ProjectAggregateState.tagAssignedApply(event: TagAssignedToTaskEvent) {
         tags.add(event.tagId)
-        updatedAt = createdAt
+        updatedAt = event.createdAt
     }
 }
