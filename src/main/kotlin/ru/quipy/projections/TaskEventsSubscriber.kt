@@ -28,10 +28,6 @@ class TaskEventsSubscriber {
                 logger.info("Task updated: $event.taskName")
             }
 
-            `when`(TaskDeletedEvent::class) { event ->
-                logger.info("Task deleted: $event.taskId")
-            }
-
             `when`(UserAddedToTaskEvent::class) { event ->
                 logger.info("User $event.userId added to task ${event.taskId}")
             }

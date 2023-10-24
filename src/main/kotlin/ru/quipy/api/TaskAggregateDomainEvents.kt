@@ -17,7 +17,6 @@ class TaskCreatedEvent(
     val userId: UUID,
     val taskName: String,
     val taskDescription: String?,
-    val statusId: UUID,
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<TaskAggregate>(
     name = TASK_CREATED_EVENT,
@@ -29,19 +28,9 @@ class TaskUpdatedEvent(
     val taskId: UUID,
     val taskName: String,
     val taskDescription: String?,
-    val statusId: UUID,
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<TaskAggregate>(
     name = TASK_UPDATED_EVENT,
-    createdAt = createdAt
-)
-
-@DomainEvent(name = TASK_DELETED_EVENT)
-class TaskDeletedEvent(
-    val taskId: UUID,
-    createdAt: Long = System.currentTimeMillis(),
-) : Event<TaskAggregate>(
-    name = TASK_DELETED_EVENT,
     createdAt = createdAt
 )
 

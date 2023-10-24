@@ -1,10 +1,9 @@
 package ru.quipy.controller
 
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import ru.quipy.api.TaskAggregate
+import org.springframework.web.bind.annotation.*
+import ru.quipy.api.*
 import ru.quipy.core.EventSourcingService
-import ru.quipy.logic.TaskAggregateState
+import ru.quipy.logic.*
 import java.util.*
 
 @RestController
@@ -12,12 +11,42 @@ import java.util.*
 class TaskController(
     val taskEsService: EventSourcingService<UUID, TaskAggregate, TaskAggregateState>
 ) {
-//    @PostMapping("/{projectId}/tasks/{taskName}")
-//    fun createTask(@PathVariable projectId: UUID,
-//                   @RequestParam taskName: String,
-//                   @RequestParam taskDescription: String?) : TaskCreatedEvent {
-//        return taskEsService.create(projectId) {
-//            it.(taskName, taskDescription)
-//        }
-//    }
+    @PostMapping("/{projectId}")
+    fun createTask(@PathVariable projectId: UUID,
+                   @RequestParam userId: UUID,
+                   @RequestParam name: String,
+                   @RequestParam description: String?) : TaskCreatedEvent {
+        return taskEsService.create {
+            it.createTask(UUID.randomUUID(), projectId, name, description, userId)
+        }
+    }
+
+    @GetMapping("/{taskId}")
+    fun getTask(@PathVariable taskId: UUID): TaskAggregateState? {
+        return taskEsService.getState(taskId)
+    }
+
+    @PatchMapping("/{taskId}")
+    fun updateTask(@PathVariable taskId: UUID,
+                   @RequestParam name: String,
+                   @RequestParam description: String?) : TaskUpdatedEvent {
+        return taskEsService.update(taskId) {
+            it.updateTask(name, description)
+        }
+    }
+
+    @PatchMapping("/addUser/{taskId}")
+    fun addUser(@PathVariable taskId: UUID, @RequestParam userId: UUID) : UserAddedToTaskEvent {
+        return taskEsService.update(taskId) {
+            it.addUserToTask(userId)
+        }
+    }
+
+    @PatchMapping("/deleteUser/{taskId}")
+    fun deleteUser(@PathVariable taskId: UUID, @RequestParam userId: UUID) : UserDeletedFromTaskEvent {
+        return taskEsService.update(taskId) {
+            it.deleteUserFromTask(userId)
+        }
+    }
+
 }

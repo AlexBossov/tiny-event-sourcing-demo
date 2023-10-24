@@ -12,7 +12,7 @@ class ProjectAggregateState : AggregateState<UUID, ProjectAggregate> {
     var updatedAt: Long = System.currentTimeMillis()
 
     lateinit var projectTitle: String
-    lateinit var userId: UUID
+    var users = mutableListOf<UUID>()
     var tasks = mutableMapOf<UUID, TaskEntity>()
     var projectTags = mutableMapOf<UUID, TagEntity>()
 
@@ -23,25 +23,31 @@ class ProjectAggregateState : AggregateState<UUID, ProjectAggregate> {
     fun projectCreatedApply(event: ProjectCreatedEvent) {
         projectId = event.projectId
         projectTitle = event.title
-        userId = event.userId
+        users.add(event.userId)
         updatedAt = createdAt
     }
 
     @StateTransitionFunc
     fun tagCreatedApply(event: TagCreatedEvent) {
-        // TODO: ??
+        projectTags[event.tagId] = TagEntity(event.tagId, event.tagName)
+        updatedAt = createdAt
+    }
+
+    @StateTransitionFunc
+    fun taskCreatedApply(event: TaskCreatedEvent) {
+        tasks[event.taskId] = TaskEntity(event.taskId, event.taskName, mutableSetOf())
         updatedAt = createdAt
     }
 
     @StateTransitionFunc
     fun userAddedToProjectApply(event: UserAddedToProjectEvent) {
-        // TODO: ?
+        users.add(event.userId)
         updatedAt = createdAt
     }
 
     @StateTransitionFunc
     fun userDeletedFromProjectApply(event: UserDeletedFromProjectEvent) {
-        // TODO: ??
+        users.remove(event.userId)
         updatedAt = createdAt
     }
 }

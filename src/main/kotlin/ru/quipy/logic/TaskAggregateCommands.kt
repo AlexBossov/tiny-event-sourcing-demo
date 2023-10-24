@@ -1,28 +1,35 @@
 package ru.quipy.logic
 
 import ru.quipy.api.TaskCreatedEvent
-import ru.quipy.api.TaskDeletedEvent
 import ru.quipy.api.TaskUpdatedEvent
+import ru.quipy.api.UserAddedToTaskEvent
+import ru.quipy.api.UserDeletedFromTaskEvent
 import java.util.*
 
-fun TaskAggregateState.createTask(projectId: UUID, name: String, description: String?, statusId: UUID, userId: UUID): TaskCreatedEvent {
+fun TaskAggregateState.createTask(id: UUID, projectId: UUID, name: String, description: String?, userId: UUID): TaskCreatedEvent {
     return TaskCreatedEvent(
-        taskId = this.getId(),
+        taskId = id,
         projectId = projectId,
         userId = userId,
         taskName = name,
-        taskDescription = description,
-        statusId = statusId)
+        taskDescription = description)
 }
 
-fun TaskAggregateState.updateTask(taskId: UUID, name: String, description: String?, statusId: UUID): TaskUpdatedEvent {
+fun TaskAggregateState.updateTask(name: String, description: String?): TaskUpdatedEvent {
     return TaskUpdatedEvent(
-        taskId = taskId,
+        taskId = this.getId(),
         taskName = name,
-        taskDescription = description,
-        statusId = statusId)
+        taskDescription = description)
 }
 
-fun TaskAggregateState.deleteTask(taskId: UUID): TaskDeletedEvent {
-    return TaskDeletedEvent(taskId = taskId)
+fun TaskAggregateState.addUserToTask(userId: UUID): UserAddedToTaskEvent {
+    return UserAddedToTaskEvent(
+        taskId = this.getId(),
+        userId = userId)
+}
+
+fun TaskAggregateState.deleteUserFromTask(userId: UUID): UserDeletedFromTaskEvent {
+    return UserDeletedFromTaskEvent(
+        taskId = this.getId(),
+        userId = userId)
 }

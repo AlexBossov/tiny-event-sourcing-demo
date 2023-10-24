@@ -1,8 +1,6 @@
 package ru.quipy.logic
 
-import ru.quipy.api.ProjectCreatedEvent
-import ru.quipy.api.TagAssignedToTaskEvent
-import ru.quipy.api.TagCreatedEvent
+import ru.quipy.api.*
 import java.util.*
 
 // Commands : takes something -> returns event
@@ -33,4 +31,16 @@ fun ProjectAggregateState.assignTagToTask(tagId: UUID, taskId: UUID): TagAssigne
     }
 
     return TagAssignedToTaskEvent(projectId = this.getId(), tagId = tagId, taskId = taskId)
+}
+
+fun ProjectAggregateState.addUserToProject(userId: UUID): UserAddedToProjectEvent {
+    return UserAddedToProjectEvent(
+        projectId = this.getId(),
+        userId = userId)
+}
+
+fun ProjectAggregateState.deleteUserFromProject(userId: UUID): UserDeletedFromProjectEvent {
+    return UserDeletedFromProjectEvent(
+        projectId = this.getId(),
+        userId = userId)
 }
