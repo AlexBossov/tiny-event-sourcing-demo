@@ -12,7 +12,7 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
 
     lateinit var taskName: String
     var taskDescription: String? = null
-    lateinit var statusId: UUID
+    var statusId: UUID? = null
     lateinit var projectId: UUID
     var users = mutableListOf<UUID>()
     var availableStatuses = mutableListOf<UUID>()
