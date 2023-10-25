@@ -15,8 +15,8 @@ class UserController(
 ) {
 
     @PostMapping
-    fun createUser(@RequestParam nickname: String, @RequestParam password: String): UserCreatedEvent {
-        return userEsService.create { it.create(UUID.randomUUID(), nickname, password) }
+    fun createUser(@RequestBody user: UserDto): UserCreatedEvent {
+        return userEsService.create { it.create(UUID.randomUUID(), user.nickname, user.password) }
     }
 
     @GetMapping("/{userId}")
@@ -24,3 +24,8 @@ class UserController(
         return userEsService.getState(userId);
     }
 }
+
+data class UserDto(
+    val nickname: String,
+    val password: String
+)

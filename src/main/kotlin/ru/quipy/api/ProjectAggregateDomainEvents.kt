@@ -5,8 +5,6 @@ import ru.quipy.domain.Event
 import java.util.*
 
 const val PROJECT_CREATED_EVENT = "PROJECT_CREATED_EVENT"
-const val TAG_CREATED_EVENT = "TAG_CREATED_EVENT"
-const val TAG_ASSIGNED_TO_TASK_EVENT = "TAG_ASSIGNED_TO_TASK_EVENT"
 const val USER_ADDED_TO_PROJECT = "USER_ADDED_TO_PROJECT"
 const val USER_DELETED_FROM_PROJECT = "USER_DELETED_FROM_PROJECT"
 const val STATUS_ADDED_TO_PROJECT = "STATUS_ADDED_TO_PROJECT"
@@ -24,28 +22,6 @@ class ProjectCreatedEvent(
 ) : Event<ProjectAggregate>(
     name = PROJECT_CREATED_EVENT,
     createdAt = createdAt,
-)
-
-@DomainEvent(name = TAG_CREATED_EVENT)
-class TagCreatedEvent(
-    val projectId: UUID,
-    val tagId: UUID,
-    val tagName: String,
-    createdAt: Long = System.currentTimeMillis(),
-) : Event<ProjectAggregate>(
-    name = TAG_CREATED_EVENT,
-    createdAt = createdAt,
-)
-
-@DomainEvent(name = TAG_ASSIGNED_TO_TASK_EVENT)
-class TagAssignedToTaskEvent(
-    val projectId: UUID,
-    val taskId: UUID,
-    val tagId: UUID,
-    createdAt: Long = System.currentTimeMillis(),
-) : Event<ProjectAggregate>(
-    name = TAG_ASSIGNED_TO_TASK_EVENT,
-    createdAt = createdAt
 )
 
 @DomainEvent(name = USER_ADDED_TO_PROJECT)
