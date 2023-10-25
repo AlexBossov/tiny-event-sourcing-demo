@@ -1,7 +1,5 @@
 package ru.quipy.logic
 
-import org.apache.tomcat.jni.User
-import ru.quipy.api.ProjectCreatedEvent
 import ru.quipy.api.UserAggregate
 import ru.quipy.api.UserCreatedEvent
 import ru.quipy.core.annotations.StateTransitionFunc

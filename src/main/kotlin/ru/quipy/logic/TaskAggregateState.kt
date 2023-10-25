@@ -15,7 +15,6 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
     lateinit var statusId: UUID
     lateinit var projectId: UUID
     var users = mutableListOf<UUID>()
-    var tags = mutableListOf<UUID>()
     var availableStatuses = mutableListOf<UUID>()
 
     override fun getId() = taskId
@@ -48,12 +47,6 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
     @StateTransitionFunc
     fun userDeletedFromTaskApply(event: UserDeletedFromTaskEvent) {
         users.remove(event.userId)
-        updatedAt = event.createdAt
-    }
-
-    @StateTransitionFunc
-    fun tagAssignedApply(event: TagAssignedToTaskEvent) {
-        tags.add(event.tagId)
         updatedAt = event.createdAt
     }
 

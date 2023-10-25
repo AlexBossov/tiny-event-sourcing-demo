@@ -11,13 +11,11 @@ import java.util.*
 class TaskController(
     val taskEsService: EventSourcingService<UUID, TaskAggregate, TaskAggregateState>
 ) {
-    @PostMapping("/{projectId}")
-    fun createTask(@PathVariable projectId: UUID,
-                   @RequestParam userId: UUID,
-                   @RequestParam name: String,
-                   @RequestParam description: String?) : TaskCreatedEvent {
+
+    @PostMapping
+    fun createTask(@RequestBody task: TaskDto): TaskCreatedEvent {
         return taskEsService.create {
-            it.createTask(UUID.randomUUID(), projectId, name, description, userId)
+            it.createTask(UUID.randomUUID(), task.projectId, task.userId, task.name, task.description)
         }
     }
 
@@ -27,26 +25,34 @@ class TaskController(
     }
 
     @PatchMapping("/{taskId}")
-    fun updateTask(@PathVariable taskId: UUID,
-                   @RequestParam name: String,
-                   @RequestParam description: String?) : TaskUpdatedEvent {
+    fun updateTask(
+        @PathVariable taskId: UUID,
+        @RequestParam name: String,
+        @RequestParam description: String?
+    ): TaskUpdatedEvent {
         return taskEsService.update(taskId) {
             it.updateTask(name, description)
         }
     }
 
     @PatchMapping("/addUser/{taskId}")
-    fun addUser(@PathVariable taskId: UUID, @RequestParam userId: UUID) : UserAddedToTaskEvent {
+    fun addUser(@PathVariable taskId: UUID, @RequestParam userId: UUID): UserAddedToTaskEvent {
         return taskEsService.update(taskId) {
             it.addUserToTask(userId)
         }
     }
 
     @PatchMapping("/deleteUser/{taskId}")
-    fun deleteUser(@PathVariable taskId: UUID, @RequestParam userId: UUID) : UserDeletedFromTaskEvent {
+    fun deleteUser(@PathVariable taskId: UUID, @RequestParam userId: UUID): UserDeletedFromTaskEvent {
         return taskEsService.update(taskId) {
             it.deleteUserFromTask(userId)
         }
     }
-
 }
+
+data class TaskDto(
+    val projectId: UUID,
+    val userId: UUID,
+    val name: String,
+    val description: String?,
+)
