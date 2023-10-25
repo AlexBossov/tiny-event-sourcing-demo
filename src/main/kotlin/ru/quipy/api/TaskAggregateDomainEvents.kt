@@ -7,8 +7,8 @@ import java.util.*
 const val TASK_CREATED_EVENT = "TASK_CREATED_EVENT"
 const val TASK_UPDATED_EVENT = "TASK_UPDATED_EVENT"
 const val TASK_DELETED_EVENT = "TASK_DELETED_EVENT"
-const val USER_ADDED_TO_TASK = "USER_ADDED_TO_TASK"
-const val USER_DELETED_FROM_TASK = "USER_DELETED_FROM_TASK"
+const val USER_ADDED_TO_TASK_EVENT = "USER_ADDED_TO_TASK_EVENT"
+const val USER_DELETED_FROM_TASK_EVENT = "USER_DELETED_FROM_TASK_EVENT"
 
 @DomainEvent(name = TASK_CREATED_EVENT)
 class TaskCreatedEvent(
@@ -34,23 +34,33 @@ class TaskUpdatedEvent(
     createdAt = createdAt
 )
 
-@DomainEvent(name = USER_ADDED_TO_TASK)
+@DomainEvent(name = USER_ADDED_TO_TASK_EVENT)
 class UserAddedToTaskEvent(
     val taskId: UUID,
     val userId: UUID,
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<TaskAggregate>(
-    name = USER_ADDED_TO_TASK,
+    name = USER_ADDED_TO_TASK_EVENT,
     createdAt = createdAt
 )
 
-@DomainEvent(name = USER_DELETED_FROM_TASK)
+@DomainEvent(name = USER_DELETED_FROM_TASK_EVENT)
 class UserDeletedFromTaskEvent(
     val taskId: UUID,
     val userId: UUID,
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<TaskAggregate>(
-    name = USER_DELETED_FROM_TASK,
+    name = USER_DELETED_FROM_TASK_EVENT,
+    createdAt = createdAt
+)
+
+@DomainEvent(name = USER_ADDED_TO_TASK_EVENT)
+class StatusAddedToTaskEvent(
+    val taskId: UUID,
+    val statusId: UUID,
+    createdAt: Long = System.currentTimeMillis(),
+) : Event<TaskAggregate>(
+    name = USER_ADDED_TO_TASK_EVENT,
     createdAt = createdAt
 )
 

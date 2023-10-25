@@ -10,7 +10,7 @@ fun ProjectAggregateState.create(id: UUID, title: String, userId: UUID): Project
     return ProjectCreatedEvent(
         projectId = id,
         title = title,
-        userId = userId,
+        userId = userId
     )
 }
 
@@ -49,4 +49,12 @@ fun ProjectAggregateState.addTaskToProject(taskId: UUID): TaskAddedToProjectEven
     return TaskAddedToProjectEvent(
         projectId = this.getId(),
         taskId = taskId)
+}
+
+fun ProjectAggregateState.addStatusToProject(statusId: UUID, name: String, color: String): StatusAddedToProjectEvent {
+    return StatusAddedToProjectEvent(
+        projectId = this.getId(),
+        statusId = statusId,
+        statusName = name,
+        statusColor = color)
 }

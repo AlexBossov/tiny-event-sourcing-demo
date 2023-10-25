@@ -3,6 +3,7 @@ package ru.quipy.controller
 import org.springframework.web.bind.annotation.*
 import ru.quipy.api.*
 import ru.quipy.core.EventSourcingService
+import ru.quipy.domain.Event
 import ru.quipy.logic.*
 import java.util.*
 
@@ -47,4 +48,11 @@ class ProjectController(
             it.assignTagToTask(tagId, taskId)
         }
     }
+
+//    @PatchMapping("/addUser/{projectId}")
+//    fun addStatus(@PathVariable projectId: UUID, @RequestParam userId: UUID) : UserAddedToProjectEvent {
+//        return projectEsService.update(projectId) {
+//            it.addUserToProject(userId)
+//        }
+//    }
 }

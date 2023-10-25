@@ -1,9 +1,6 @@
 package ru.quipy.logic
 
-import ru.quipy.api.TaskCreatedEvent
-import ru.quipy.api.TaskUpdatedEvent
-import ru.quipy.api.UserAddedToTaskEvent
-import ru.quipy.api.UserDeletedFromTaskEvent
+import ru.quipy.api.*
 import java.util.*
 
 fun TaskAggregateState.createTask(id: UUID, projectId: UUID, name: String, description: String?, userId: UUID): TaskCreatedEvent {
@@ -32,4 +29,14 @@ fun TaskAggregateState.deleteUserFromTask(userId: UUID): UserDeletedFromTaskEven
     return UserDeletedFromTaskEvent(
         taskId = this.getId(),
         userId = userId)
+}
+
+fun TaskAggregateState.addStatusToTask(statusId: UUID): StatusAddedToTaskEvent {
+    if (!availableStatuses.contains(statusId)) {
+        throw IllegalArgumentException("Status doesn't exist: $statusId")
+    }
+
+    return StatusAddedToTaskEvent(
+        taskId = this.getId(),
+        statusId = statusId)
 }
