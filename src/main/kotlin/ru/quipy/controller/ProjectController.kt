@@ -41,7 +41,7 @@ class ProjectController(
         }
     }
 
-    @PatchMapping("/addStatus/{projectId}")
+    @PatchMapping("/addStatus")
     fun addStatus(@RequestBody status: StatusDto): StatusAddedToProjectEvent {
         return projectEsService.update(status.projectId) {
             it.addStatusToProject(UUID.randomUUID(), status.name, status.color)
