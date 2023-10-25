@@ -48,6 +48,13 @@ class TaskController(
             it.deleteUserFromTask(userId)
         }
     }
+
+    @PatchMapping("/addStatus/{taskId}")
+    fun addStatus(@PathVariable taskId: UUID, @RequestParam statusId: UUID): StatusAddedToTaskEvent {
+        return taskEsService.update(taskId) {
+            it.addStatusToTask(statusId)
+        }
+    }
 }
 
 data class TaskDto(

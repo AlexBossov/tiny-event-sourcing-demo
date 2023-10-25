@@ -1,10 +1,7 @@
 package ru.quipy.controller
 
 import org.springframework.web.bind.annotation.*
-import ru.quipy.api.ProjectAggregate
-import ru.quipy.api.ProjectCreatedEvent
-import ru.quipy.api.UserAddedToProjectEvent
-import ru.quipy.api.UserDeletedFromProjectEvent
+import ru.quipy.api.*
 import ru.quipy.core.EventSourcingService
 import ru.quipy.domain.Event
 import ru.quipy.logic.*
@@ -43,4 +40,17 @@ class ProjectController(
             it.deleteUserFromProject(userId)
         }
     }
+
+    @PatchMapping("/addStatus/{projectId}")
+    fun addStatus(@RequestBody status: StatusDto): StatusAddedToProjectEvent {
+        return projectEsService.update(status.projectId) {
+            it.addStatusToProject(UUID.randomUUID(), status.name, status.color)
+        }
+    }
 }
+
+data class StatusDto(
+    val projectId: UUID,
+    val name: String,
+    val color: String,
+)

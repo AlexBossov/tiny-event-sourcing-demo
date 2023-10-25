@@ -50,3 +50,9 @@ fun TaskAggregateState.addStatusToTask(statusId: UUID): StatusAddedToTaskEvent {
         taskId = this.getId(),
         statusId = statusId)
 }
+
+fun TaskAggregateState.addStatusToProject(statusId: UUID): PossibleStatusAddedToProjectEvent {
+    return PossibleStatusAddedToProjectEvent(
+        taskId = this.getId(),
+        statusId = statusId)
+}

@@ -51,7 +51,7 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
     }
 
     @StateTransitionFunc
-    fun statusAddedToProjectApply(event: StatusAddedToProjectEvent) {
+    fun statusAddedToProjectApply(event: PossibleStatusAddedToProjectEvent) {
         availableStatuses.add(event.statusId)
         updatedAt = event.createdAt
     }

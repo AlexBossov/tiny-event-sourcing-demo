@@ -9,6 +9,7 @@ const val TASK_UPDATED_EVENT = "TASK_UPDATED_EVENT"
 const val TASK_DELETED_EVENT = "TASK_DELETED_EVENT"
 const val USER_ADDED_TO_TASK_EVENT = "USER_ADDED_TO_TASK_EVENT"
 const val USER_DELETED_FROM_TASK_EVENT = "USER_DELETED_FROM_TASK_EVENT"
+const val POSSIBLE_STATUS_ADDED_TO_PROJECT_EVENT = "POSSIBLE_STATUS_ADDED_TO_PROJECT_EVENT"
 
 @DomainEvent(name = TASK_CREATED_EVENT)
 class TaskCreatedEvent(
@@ -61,6 +62,16 @@ class StatusAddedToTaskEvent(
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<TaskAggregate>(
     name = USER_ADDED_TO_TASK_EVENT,
+    createdAt = createdAt
+)
+
+@DomainEvent(name = POSSIBLE_STATUS_ADDED_TO_PROJECT_EVENT)
+class PossibleStatusAddedToProjectEvent(
+    val taskId: UUID,
+    val statusId: UUID,
+    createdAt: Long = System.currentTimeMillis(),
+) : Event<TaskAggregate>(
+    name = POSSIBLE_STATUS_ADDED_TO_PROJECT_EVENT,
     createdAt = createdAt
 )
 
