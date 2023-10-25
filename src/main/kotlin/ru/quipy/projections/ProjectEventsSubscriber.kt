@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct
 
 @Service
 class ProjectEventsSubscriber(
-    val taskEsService: EventSourcingService<UUID, TaskAggregate, TaskAggregateState>
+    val taskEsService: EventSourcingService<UUID, TaskAggregate, TaskAggregateState>,
     val projectEsService: EventSourcingService<UUID, ProjectAggregate, ProjectAggregateState>
 ) {
 
