@@ -7,4 +7,5 @@ data class TaskDto(
     val userId: UUID?,
     val name: String,
     val description: String?,
+    val statusName: String?
 )
