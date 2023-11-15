@@ -4,7 +4,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.quipy.api.UserAggregate
-import ru.quipy.projection.UserEventsSubscriber
 import ru.quipy.projection.dto.UserDto
 import ru.quipy.projection.repository.ProjectUsersRepository
 import ru.quipy.projection.repository.UserRepository
@@ -17,7 +16,7 @@ class ProjectUsersService(
     val userRepository: UserRepository,
     val projectUsersRepository: ProjectUsersRepository
 ) {
-    val logger: Logger = LoggerFactory.getLogger(UserEventsSubscriber::class.java)
+    val logger: Logger = LoggerFactory.getLogger(ProjectUsersService::class.java)
 
     fun findUsersByProjectId(projectId: UUID): List<UserDto> {
         val projectUsers = projectUsersRepository.findByProjectId(projectId)
