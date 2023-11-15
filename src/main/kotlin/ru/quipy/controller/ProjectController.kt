@@ -1,18 +1,14 @@
 package ru.quipy.controller
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import ru.quipy.api.ProjectAggregate
-import ru.quipy.api.ProjectCreatedEvent
-import ru.quipy.api.TaskCreatedEvent
+import org.springframework.web.bind.annotation.*
+import ru.quipy.api.*
 import ru.quipy.core.EventSourcingService
+import ru.quipy.domain.Event
+import ru.quipy.logic.*
 import ru.quipy.logic.ProjectAggregateState
-import ru.quipy.logic.addTask
+import ru.quipy.logic.addUserToProject
 import ru.quipy.logic.create
+import ru.quipy.logic.deleteUserFromProject
 import java.util.*
 
 @RestController
@@ -22,19 +18,39 @@ class ProjectController(
 ) {
 
     @PostMapping("/{projectTitle}")
-    fun createProject(@PathVariable projectTitle: String, @RequestParam creatorId: String) : ProjectCreatedEvent {
-        return projectEsService.create { it.create(UUID.randomUUID(), projectTitle, creatorId) }
+    fun createProject(@PathVariable projectTitle: String, @RequestParam userId: UUID): ProjectCreatedEvent {
+        return projectEsService.create { it.create(UUID.randomUUID(), projectTitle, userId) }
     }
 
     @GetMapping("/{projectId}")
-    fun getAccount(@PathVariable projectId: UUID) : ProjectAggregateState? {
+    fun getProject(@PathVariable projectId: UUID): ProjectAggregateState? {
         return projectEsService.getState(projectId)
     }
 
-    @PostMapping("/{projectId}/tasks/{taskName}")
-    fun createTask(@PathVariable projectId: UUID, @PathVariable taskName: String) : TaskCreatedEvent {
+    @PatchMapping("/addUser/{projectId}")
+    fun addUser(@PathVariable projectId: UUID, @RequestParam userId: UUID): UserAddedToProjectEvent {
         return projectEsService.update(projectId) {
-            it.addTask(taskName)
+            it.addUserToProject(userId)
+        }
+    }
+
+    @PatchMapping("/deleteUser/{projectId}")
+    fun deleteUser(@PathVariable projectId: UUID, @RequestParam userId: UUID): UserDeletedFromProjectEvent {
+        return projectEsService.update(projectId) {
+            it.deleteUserFromProject(userId)
+        }
+    }
+
+    @PatchMapping("/addStatus")
+    fun addStatus(@RequestBody status: StatusDto): StatusAddedToProjectEvent {
+        return projectEsService.update(status.projectId) {
+            it.addStatusToProject(UUID.randomUUID(), status.name, status.color)
         }
     }
 }
+
+data class StatusDto(
+    val projectId: UUID,
+    val name: String,
+    val color: String,
+)
