@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import ru.quipy.projection.dto.ProjectDto
+import ru.quipy.projection.dto.TaskDto
 import ru.quipy.projection.service.ProjectTasksService
 import java.util.*
 
@@ -28,16 +30,3 @@ class ProjectTasksViewController(
     }
 }
 
-data class ProjectDto(
-    val projectId: UUID,
-    val projectTitle: String,
-    val createdAt: Long,
-    val updatedAt: Long,
-)
-
-data class TaskDto(
-    val projectId: UUID,
-    val userId: UUID,
-    val name: String,
-    val description: String?,
-)

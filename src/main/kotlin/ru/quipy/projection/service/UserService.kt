@@ -8,7 +8,6 @@ import ru.quipy.api.UserCreatedEvent
 import ru.quipy.projection.UserEventsSubscriber
 import ru.quipy.projection.dto.UserDto
 import ru.quipy.projection.repository.UserRepository
-import ru.quipy.projection.view.UserView
 import ru.quipy.projection.view.UserViewDomain
 import ru.quipy.streams.annotation.AggregateSubscriber
 import ru.quipy.streams.annotation.SubscribeEvent
