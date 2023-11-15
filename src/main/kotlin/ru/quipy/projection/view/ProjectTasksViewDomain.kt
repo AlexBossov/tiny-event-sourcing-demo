@@ -19,9 +19,9 @@ class ProjectTasksViewDomain {
     data class TaskView(
         @Id override val id: UUID,
         val projectId: UUID,
-        val userId: UUID,
+        var userId: UUID?,
         val name: String,
-        val description: String,
+        val description: String?,
         val createdAt: Long = System.currentTimeMillis(),
         val updatedAt: Long = System.currentTimeMillis()
     ) : Unique<UUID>

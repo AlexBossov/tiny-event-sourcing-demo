@@ -4,10 +4,12 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.quipy.api.ProjectCreatedEvent
+import ru.quipy.api.TaskCreatedEvent
 import ru.quipy.api.UserAggregate
+import ru.quipy.api.UserDeletedFromTaskEvent
 import ru.quipy.projection.UserEventsSubscriber
-import ru.quipy.projection.controller.ProjectDto
-import ru.quipy.projection.controller.TaskDto
+import ru.quipy.projection.dto.ProjectDto
+import ru.quipy.projection.dto.TaskDto
 import ru.quipy.projection.repository.ProjectRepository
 import ru.quipy.projection.repository.TaskRepository
 import ru.quipy.projection.view.ProjectTasksViewDomain
@@ -36,6 +38,28 @@ class ProjectTasksService(
         )
     }
 
+    @SubscribeEvent
+    fun taskCreatedSubscriber(event: TaskCreatedEvent) {
+        logger.info("Task created: $event.taskId")
+        taskRepository.save(
+            ProjectTasksViewDomain.TaskView(
+                event.taskId,
+                event.projectId,
+                event.userId,
+                event.taskName,
+                event.taskDescription,
+                event.createdAt
+            )
+        )
+    }
+
+    @SubscribeEvent
+    fun userDeletedFromTaskSubscriber(event: UserDeletedFromTaskEvent) {
+        logger.info("User $event.userId deleted from task $event.taskId")
+        val task = taskRepository.findById(event.taskId).orElse(null) ?: return
+        task.userId = null
+    }
+
     fun findAll(): List<ProjectDto> {
         val projects = projectRepository.findAll()
         return projects.map { p -> ProjectDto(p.id, p.projectTitle, p.createdAt, p.updatedAt) }
@@ -47,7 +71,7 @@ class ProjectTasksService(
     }
 
     fun findProjectById(projectId: UUID): ProjectDto? {
-        val project = projectRepository.findById(projectId).orElse(null)
+        val project = projectRepository.findById(projectId).orElse(null) ?: return null
         return ProjectDto(project.id, project.projectTitle, project.createdAt, project.updatedAt)
     }
 }
