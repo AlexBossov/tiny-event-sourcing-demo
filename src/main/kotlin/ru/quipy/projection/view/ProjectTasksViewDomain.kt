@@ -18,8 +18,10 @@ class ProjectTasksViewDomain {
     @Document(collection = "user-view")
     data class TaskView(
         @Id override val id: UUID,
-        val nickname: String,
-        val password: String,
+        val projectId: UUID,
+        val userId: UUID,
+        val name: String,
+        val description: String,
         val createdAt: Long = System.currentTimeMillis(),
         val updatedAt: Long = System.currentTimeMillis()
     ) : Unique<UUID>

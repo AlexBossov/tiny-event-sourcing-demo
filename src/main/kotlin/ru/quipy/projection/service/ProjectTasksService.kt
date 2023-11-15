@@ -5,21 +5,21 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.quipy.api.ProjectCreatedEvent
 import ru.quipy.api.UserAggregate
-import ru.quipy.api.UserCreatedEvent
 import ru.quipy.projection.UserEventsSubscriber
 import ru.quipy.projection.controller.ProjectDto
-import ru.quipy.projection.dto.UserDto
+import ru.quipy.projection.controller.TaskDto
 import ru.quipy.projection.repository.ProjectRepository
-import ru.quipy.projection.repository.UserRepository
+import ru.quipy.projection.repository.TaskRepository
 import ru.quipy.projection.view.ProjectTasksViewDomain
-import ru.quipy.projection.view.UserViewDomain
 import ru.quipy.streams.annotation.AggregateSubscriber
 import ru.quipy.streams.annotation.SubscribeEvent
+import java.util.*
 
 @Service
 @AggregateSubscriber(aggregateClass = UserAggregate::class, subscriberName = "project-tasks-subscriber")
 class ProjectTasksService(
-    val projectRepository: ProjectRepository
+    val projectRepository: ProjectRepository,
+    val taskRepository: TaskRepository
 ) {
     val logger: Logger = LoggerFactory.getLogger(UserEventsSubscriber::class.java)
 
@@ -39,5 +39,15 @@ class ProjectTasksService(
     fun findAll(): List<ProjectDto> {
         val projects = projectRepository.findAll()
         return projects.map { p -> ProjectDto(p.id, p.projectTitle, p.createdAt, p.updatedAt) }
+    }
+
+    fun findTasksByProjectId(projectId: UUID): List<TaskDto> {
+        val tasks = taskRepository.findByProjectId(projectId)
+        return tasks.map { t -> TaskDto(t.projectId, t.userId, t.name, t.description) }
+    }
+
+    fun findProjectById(projectId: UUID): ProjectDto? {
+        val project = projectRepository.findById(projectId).orElse(null)
+        return ProjectDto(project.id, project.projectTitle, project.createdAt, project.updatedAt)
     }
 }
