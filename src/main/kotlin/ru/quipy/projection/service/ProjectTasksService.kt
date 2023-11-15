@@ -3,11 +3,10 @@ package ru.quipy.projection.service
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import ru.quipy.api.ProjectAggregate
 import ru.quipy.api.ProjectCreatedEvent
 import ru.quipy.api.TaskCreatedEvent
-import ru.quipy.api.UserAggregate
 import ru.quipy.api.UserDeletedFromTaskEvent
-import ru.quipy.projection.UserEventsSubscriber
 import ru.quipy.projection.dto.ProjectDto
 import ru.quipy.projection.dto.TaskDto
 import ru.quipy.projection.repository.ProjectRepository
@@ -19,14 +18,14 @@ import ru.quipy.streams.annotation.SubscribeEvent
 import java.util.*
 
 @Service
-@AggregateSubscriber(aggregateClass = UserAggregate::class, subscriberName = "project-tasks-subscriber")
+@AggregateSubscriber(aggregateClass = ProjectAggregate::class, subscriberName = "project-tasks-subscriber")
 class ProjectTasksService(
     val projectRepository: ProjectRepository,
     val taskRepository: TaskRepository,
     val statusRepository: StatusRepository
 
 ) {
-    val logger: Logger = LoggerFactory.getLogger(UserEventsSubscriber::class.java)
+    val logger: Logger = LoggerFactory.getLogger(ProjectTasksService::class.java)
 
     @SubscribeEvent
     fun projectCreatedSubscriber(event: ProjectCreatedEvent) {

@@ -19,7 +19,7 @@ class ProjectTasksViewController(
         return projectTasksService.findAll()
     }
 
-    @GetMapping("/{projectId}")
+    @GetMapping("/tasks/{projectId}")
     fun getTasksByProjectId(@PathVariable projectId: UUID): List<TaskDto> {
         return projectTasksService.findTasksByProjectId(projectId)
     }

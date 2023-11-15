@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.quipy.api.UserAggregate
 import ru.quipy.api.UserCreatedEvent
-import ru.quipy.projection.UserEventsSubscriber
 import ru.quipy.projection.dto.UserDto
 import ru.quipy.projection.repository.UserRepository
 import ru.quipy.projection.view.UserViewDomain
@@ -18,7 +17,7 @@ class UserService(
     val userRepository: UserRepository
 ) {
 
-    val logger: Logger = LoggerFactory.getLogger(UserEventsSubscriber::class.java)
+    val logger: Logger = LoggerFactory.getLogger(UserService::class.java)
 
     @SubscribeEvent
     fun userCreatedSubscriber(event: UserCreatedEvent) {
