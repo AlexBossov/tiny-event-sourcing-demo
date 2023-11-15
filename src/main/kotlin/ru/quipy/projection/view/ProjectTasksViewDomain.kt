@@ -6,7 +6,7 @@ import ru.quipy.domain.Unique
 import java.util.*
 
 class ProjectTasksViewDomain {
-    @Document(collection = "user-view")
+    @Document(collection = "project-view")
     data class ProjectView(
         @Id override val id: UUID,
         val users: List<UUID>,
@@ -15,7 +15,7 @@ class ProjectTasksViewDomain {
         val updatedAt: Long = System.currentTimeMillis()
     ) : Unique<UUID>
 
-    @Document(collection = "user-view")
+    @Document(collection = "task-view")
     data class TaskView(
         @Id override val id: UUID,
         val projectId: UUID,
