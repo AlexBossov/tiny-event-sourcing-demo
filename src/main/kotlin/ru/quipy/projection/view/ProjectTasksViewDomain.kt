@@ -22,6 +22,17 @@ class ProjectTasksViewDomain {
         var userId: UUID?,
         val name: String,
         val description: String?,
+        val statusId: UUID?,
+        val createdAt: Long = System.currentTimeMillis(),
+        val updatedAt: Long = System.currentTimeMillis()
+    ) : Unique<UUID>
+
+    @Document(collection = "status-view")
+    data class StatusView(
+        @Id override val id: UUID,
+        val name: String,
+        val projectId: UUID,
+        val color: String,
         val createdAt: Long = System.currentTimeMillis(),
         val updatedAt: Long = System.currentTimeMillis()
     ) : Unique<UUID>

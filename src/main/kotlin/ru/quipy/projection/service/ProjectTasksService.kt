@@ -10,6 +10,7 @@ import ru.quipy.api.UserDeletedFromTaskEvent
 import ru.quipy.projection.dto.ProjectDto
 import ru.quipy.projection.dto.TaskDto
 import ru.quipy.projection.repository.ProjectRepository
+import ru.quipy.projection.repository.StatusRepository
 import ru.quipy.projection.repository.TaskRepository
 import ru.quipy.projection.view.ProjectTasksViewDomain
 import ru.quipy.streams.annotation.AggregateSubscriber
@@ -20,7 +21,9 @@ import java.util.*
 @AggregateSubscriber(aggregateClass = ProjectAggregate::class, subscriberName = "project-tasks-subscriber")
 class ProjectTasksService(
     val projectRepository: ProjectRepository,
-    val taskRepository: TaskRepository
+    val taskRepository: TaskRepository,
+    val statusRepository: StatusRepository
+
 ) {
     val logger: Logger = LoggerFactory.getLogger(ProjectTasksService::class.java)
 
@@ -47,6 +50,7 @@ class ProjectTasksService(
                 event.userId,
                 event.taskName,
                 event.taskDescription,
+                event.statusId,
                 event.createdAt
             )
         )
@@ -66,7 +70,9 @@ class ProjectTasksService(
 
     fun findTasksByProjectId(projectId: UUID): List<TaskDto> {
         val tasks = taskRepository.findByProjectId(projectId)
-        return tasks.map { t -> TaskDto(t.projectId, t.userId, t.name, t.description) }
+        val statusIds = tasks.map { it.statusId }
+        val statuses = statusRepository.findAllById(statusIds).associateBy { it.id }
+        return tasks.map { t -> TaskDto(t.projectId, t.userId, t.name, t.description, statuses[t.statusId]?.name ) }
     }
 
     fun findProjectById(projectId: UUID): ProjectDto? {
